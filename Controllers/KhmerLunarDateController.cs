@@ -1,9 +1,11 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Models.Utilities;
 
 namespace kh_lunisolar_calendar.Controllers
 {
@@ -21,13 +23,6 @@ namespace kh_lunisolar_calendar.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            string[] someDate = {"dd", "mm", "YYYY"};
-            return someDate;
-        }
-
-        [AllowAnonymous]
-        public IActionResult Calendar()
-        {
             DateTime dt = DateTime.Now;
 
             DateTime firstDayOfMonth = new DateTime(dt.Year, dt.Month, 1);
@@ -37,26 +32,28 @@ namespace kh_lunisolar_calendar.Controllers
 
             string firstDayLunarCode = KhmerLunar.getKhmerLunarCode(firstDayOfMonth);
             string prevMonth = hashMonth[firstDayLunarCode.Substring(8,2)].ToString();
-            ViewBag.prevMonth = prevMonth;
+            //ViewBag.prevMonth = prevMonth;
 
             string lastDayLunarCode = KhmerLunar.getKhmerLunarCode(lastDayOfMonth);
             string nextMonth = hashMonth[lastDayLunarCode.Substring(8,2)].ToString();
-            ViewBag.nextMonth = nextMonth;
+            //ViewBag.nextMonth = nextMonth;
 
             int skipper = (int) firstDayOfMonth.DayOfWeek; // number of col to skip for first day of month
             int lastDay = lastDayOfMonth.Day; // where to stop loop from adding day to table
             int numRows = (lastDay + skipper) / 7;
-            ViewBag.skipper = skipper;
-            ViewBag.lastDay = lastDay;
-            ViewBag.numRows = numRows;
+            // ViewBag.skipper = skipper;
+            // ViewBag.lastDay = lastDay;
+            // ViewBag.numRows = numRows;
 
             String mKh = KhmerLunar.getKhmerLunarString(dt);
-            ViewBag.mKh = mKh;
+            //ViewBag.mKh = mKh;
 
             //function to create calendar needs to be param of month (default: current month)
 
             KhmerLunarDate kld = new KhmerLunarDate();
-            return View();
+
+            string[] returnStr = {"Khmer Lunisolar Calendar"};
+            return returnStr;
         }
     }
 }
