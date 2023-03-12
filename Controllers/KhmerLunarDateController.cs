@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Models.Utilities;
+using Models.ViewModels;
+using Newtonsoft.Json;
 
 namespace kh_lunisolar_calendar.Controllers
 {
@@ -19,8 +21,12 @@ namespace kh_lunisolar_calendar.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<string> Get()
+        public KhmerLunarViewModel Get(int dm = 0)
         {
+            if (dm == 0)
+            {
+                //
+            }
             DateTime dt = DateTime.Now;
 
             DateTime firstDayOfMonth = new DateTime(dt.Year, dt.Month, 1);
@@ -47,11 +53,48 @@ namespace kh_lunisolar_calendar.Controllers
             //ViewBag.mKh = mKh;
 
             //function to create calendar needs to be param of month (default: current month)
+            ICollection<KhmerLunarDate> klds = new List<KhmerLunarDate>();
+            Hashtable hsMonth = KhmerLunar.getHashMonth();
 
-            KhmerLunarDate kld = new KhmerLunarDate();
+            for (int i = 0; i < lastDay; i++)
+            {
+                DateTime solarDate = firstDayOfMonth.AddDays(i);
 
-            string[] returnStr = {"Khmer Lunisolar Calendar"};
-            return returnStr;
+                string enText = KhmerLunar.getKhmerLunarCode(solarDate);
+                string month = enText.Substring(8, 2);
+                month = KhmerLunar.getLunarMonth(month);
+                string kr = enText.Substring(10, 1);
+                kr = kr.Replace("K", "កើត").Replace("R", "រោច");
+                string d = enText.Substring(11, 2);
+                int dd = int.Parse(d);
+                d = KhmerLunar.convertToKhmerNum(dd.ToString());
+                string lunarDate = d + kr + " ខែ" + month;
+
+                KhmerLunarDate kld = new KhmerLunarDate();
+                kld.solarDate = solarDate;
+                kld.lunarDate = lunarDate;
+                kld.note = "";
+                kld.holiday = false;
+                kld.buddhistDay = false;
+                kld.shavedDay = false;
+                kld.monthTransition = false;
+                
+                klds.Add(kld);
+            }
+            
+            KhmerLunarViewModel khmerLunarView = new KhmerLunarViewModel();
+            khmerLunarView.khmerLunarDates = klds;
+            khmerLunarView.prevMonth = prevMonth;
+            khmerLunarView.nextMonth = nextMonth;
+            khmerLunarView.skipper = skipper;
+            khmerLunarView.numRows = numRows;
+            khmerLunarView.lastDay = lastDay;
+            khmerLunarView.lLunarDate = mKh;
+
+            // string kldJson = JsonConvert.SerializeObject(kld); // string for today
+
+            // string[] returnStr = {kldJson};
+            return khmerLunarView;
         }
     }
 }

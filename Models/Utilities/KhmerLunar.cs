@@ -179,10 +179,9 @@ namespace Models.Utilities
 
         public static string getKhmerLunarString(DateTime srcDate)
         {
-            Hashtable hsMonth = getHashMonth();
             Hashtable hsAnimalYear = getHashAnimalYear();
             Hashtable hsSak = getHashSak();
-            string enText = getKhmerLunarCode(srcDate);            
+            string enText = getKhmerLunarCode(srcDate);
             string khText = "";
             string sak = enText.Substring(0, 2);
             string animalYear = enText.Substring(2, 2);
@@ -206,13 +205,20 @@ namespace Models.Utilities
             }
             sak = hsSak[sak].ToString();
             year = convertToKhmerNum(year);
-            month = hsMonth[month].ToString();
+            month = getLunarMonth(month);
             animalYear = hsAnimalYear[animalYear].ToString();
             kr = kr.Replace("K", "កើត").Replace("R", "រោច");
             int dt = int.Parse(d);
             d = convertToKhmerNum(dt.ToString());
             khText = "ថ្ងៃ" + khDay + " " + d + kr + " ខែ" + month + " ឆ្នាំ" + animalYear + " " + sak + " ព.ស. " + year + "<br>ត្រូវនឹង ថ្ងៃទី" + enDay + " ខែ" + enMonth + " ឆ្នាំ" + enYear;
             return khText;
+        }
+
+        public static string getLunarMonth (string month)
+        {
+            Hashtable hsMonth = getHashMonth();
+            month = hsMonth[month].ToString();
+            return month;
         }
 
         public static string getMonthlyCalendar (DateTime srcDate)
