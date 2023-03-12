@@ -12,7 +12,8 @@ namespace Models.Utilities
 		public string note { get; set; }
 		public bool holiday { get; set; }
 		public bool buddhistDay { get; set; } //holy-day
-		public bool specialCase { get; set; } //shaved day or month transition
+		public bool shavedDay { get; set; } //shaved day
+		public bool monthTransition { get; set; } //change color of day in the new month
 
 		public KhmerLunarDate(){}
 		
@@ -36,22 +37,6 @@ namespace Models.Utilities
 			this.note = note;
 		}
 
-		public KhmerLunarDate(DateTime solarDate, string lunarDate, bool holiday, string note)
-		{
-			this.solarDate = solarDate;
-			this.lunarDate = lunarDate;
-			this.holiday = holiday;
-			this.note = note;
-		}
-
-		public KhmerLunarDate(DateTime solarDate, string lunarDate, string note, bool specialCase)
-		{
-			this.solarDate = solarDate;
-			this.lunarDate = lunarDate;
-			this.note = note;
-			this.specialCase = specialCase;
-		}
-
 		// constructor for holiday
 		public KhmerLunarDate(DateTime solarDate, bool holiday, string note)
 		{
@@ -60,6 +45,34 @@ namespace Models.Utilities
 			this.note = note;
 		}
 
+		public KhmerLunarDate(DateTime solarDate, string lunarDate, bool holiday, string note)
+		{
+			this.solarDate = solarDate;
+			this.lunarDate = lunarDate;
+			this.holiday = holiday;
+			this.note = note;
+		}
+
+		public KhmerLunarDate(DateTime solarDate, string lunarDate, string note, bool shavedDay)
+		{
+			this.solarDate = solarDate;
+			this.lunarDate = lunarDate;
+			this.note = note;
+			this.shavedDay = shavedDay;
+		}
+
+		// constructor for all attribute
+		public KhmerLunarDate(DateTime solarDate, string lunarDate, string note, bool holiday, bool buddhistDay, bool shavedDay, bool monthTransition)
+		{
+			this.solarDate = solarDate;
+			this.lunarDate = lunarDate;
+			this.note = note;
+			this.holiday = holiday;
+			this.buddhistDay = buddhistDay;
+			this.shavedDay = shavedDay;
+			this.monthTransition = monthTransition;
+		}
+		
 		// define static holiday
 	}
 }
