@@ -11,11 +11,11 @@ namespace kh_lunisolar_calendar.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class KhmerLunarDateController : ControllerBase
+    public class KhmerLunarController : ControllerBase
     {
-        private readonly ILogger<KhmerLunarDateController> _logger;
+        private readonly ILogger<KhmerLunarController> _logger;
 
-        public KhmerLunarDateController(ILogger<KhmerLunarDateController> logger)
+        public KhmerLunarController(ILogger<KhmerLunarController> logger)
         {
             _logger = logger;
         }
